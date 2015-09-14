@@ -1,0 +1,43 @@
+cscie97.asn1.knowledge.engine
+
+Remember to use Java doc to document class and method headers.  Add java comments inline  where appropriate to explain code logic.
+
+You’ll turn in a zip file containing 
+  ? Your source code (no .class files) 
+  ? Your data files (including two posted on the website) 
+  ? Results of processing the query file 
+  ? Include a document (in pdf format) describing your results: 
+Any changes that you made to the proposed design and how they continue to  support the requirements
+-- 'filename' paramter of Importer.importTripleFile() method is changed to 'fileName' to follow Java parameter naming convention.
+
+
+
+  ? Did the design document help with the implementation?
+Static method KnowledgeGraph.getInstance() was underlined
+
+  ? How could the design have been better, clearer, or made the implementation  easier?
+
+Hiding unnecessary APIs to reduce coupling:
+KnowledgeGraph can reduce coupling by setting access level of following methods as private:
+
+
+
+How could the design have been better, clearer, or made the implementation  easier?
+--Provide error scenarios, and expected error message
+
+Implementation notes:
+Each line from the file represents a Subject Predicate Object triple, space delimited.
+Each triple must end with a '.'.
+Subject, predicate, and object are case-insensitive.
+In KG.importTriples() method, if a triple already exists, then log a debug message
+
+Error: Include file path, line number in exception message
+InvalidTripleFormatException -- When a triple line is incorrectly formatted, such as when:
+The triple contains less than three space-delimted words.
+The triple contains more than three space-delimted words.
+The triple does not end with a '.'.
+Either subject, object or predicate uses '?' as an identifier.
+
+The output should include the original query followed by the Set of all matching Triples (no duplicates). If there are no matching triples, return “<null>”. 
+
+
