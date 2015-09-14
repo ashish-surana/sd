@@ -19,6 +19,8 @@ Static method KnowledgeGraph.getInstance() was underlined
 
 Hiding unnecessary APIs to reduce coupling:
 KnowledgeGraph can reduce coupling by setting access level of following methods as private:
+getNode(), getPredicate(), getTriple()
+
 
 
 
@@ -30,6 +32,8 @@ Each line from the file represents a Subject Predicate Object triple, space deli
 Each triple must end with a '.'.
 Subject, predicate, and object are case-insensitive.
 In KG.importTriples() method, if a triple already exists, then log a debug message
+Trim extra leading and trailing whitespace from identifier names.
+
 
 Error: Include file path, line number in exception message
 InvalidTripleFormatException -- When a triple line is incorrectly formatted, such as when:
