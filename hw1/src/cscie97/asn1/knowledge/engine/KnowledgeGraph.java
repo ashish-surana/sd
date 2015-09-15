@@ -97,10 +97,10 @@ public class KnowledgeGraph {
     }
 
     public Predicate getPredicate(String identifier){
-
+        return null;
     }
 
     public Triple getTriple(Node subject, Predicate predicate, Node object){
-
+        return null;
     }
 }

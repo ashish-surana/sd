@@ -18,7 +18,8 @@ public class ImportException extends Exception{
 
     @Override
     public String getMessage() {
-        //TODO
-        return super.getMessage();
+        String message = "Following error occurred while reading file at path: '"+ getFilePath() +"'.";
+        message += super.getMessage();
+        return message;
     }
 }

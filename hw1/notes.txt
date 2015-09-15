@@ -12,10 +12,10 @@ Any changes that you made to the proposed design and how they continue to  suppo
 
 
 
-  ? Did the design document help with the implementation?
+Did the design document help with the implementation?
 Static method KnowledgeGraph.getInstance() was underlined
 
-  ? How could the design have been better, clearer, or made the implementation  easier?
+How could the design have been better, clearer, or made the implementation  easier?
 
 Hiding unnecessary APIs to reduce coupling:
 KnowledgeGraph can reduce coupling by setting access level of following methods as private:
