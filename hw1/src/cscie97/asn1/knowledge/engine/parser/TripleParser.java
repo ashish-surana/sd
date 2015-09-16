@@ -1,4 +1,4 @@
-package cscie97.asn1.knowledge.engine.validator;
+package cscie97.asn1.knowledge.engine.parser;
 
 /**
  *
@@ -19,12 +19,10 @@ public class TripleParser {
     /**
      * Performs following validations on the given tripleText.
      * <ul>
-     *     <li>The triple contains exactly three space-delimted words.</li>
+     *     <li>The triple contains exactly three space-delimited words.</li>
      *     <li>The triple does not end with a '.'.</li>
+     *     <li>Neither subject, object nor predicate uses '?' as an identifier.</li>
      * </ul>
-
-
-     Either subject, object or predicate uses '?' as an identifier.
      * @return
      */
     public boolean validate() {

@@ -2,13 +2,15 @@ package cscie97.asn1.test.TestDriver;
 
 import cscie97.asn1.knowledge.engine.Importer;
 import cscie97.asn1.knowledge.engine.QueryEngine;
+import cscie97.asn1.knowledge.engine.exception.BulkQueryException;
 import cscie97.asn1.knowledge.engine.exception.ImportException;
+import cscie97.asn1.knowledge.engine.exception.QueryEngineException;
 
 public class TestDriver {
 
     public static void main(String[] args) {
         //TODO
-        args = new String[]{"E:\\Users\\ashish\\Downloads\\inputTriples.nt.txt", ""};
+        args = new String[]{"E:\\Users\\ashish\\Downloads\\inputTriples.nt", "E:\\Users\\ashish\\Downloads\\inputQueries.txt"};
 
         if(!validateArguments(args)){
             printUsage();
@@ -22,9 +24,20 @@ public class TestDriver {
         try {
             importer.importTripleFile(tripleInputFile);
             QueryEngine queryEngine = new QueryEngine();
-//            queryEngine.executeQueryFile(queryInputFile);
+            queryEngine.executeQueryFile(queryInputFile);
         } catch (ImportException e) {
             System.err.println(e.getMessage());
+        } catch (BulkQueryException e) {
+            String errorMessage = "Following error occurred while executing query file : '";
+            errorMessage += e.getFileName()+"' at line "+e.getLineNum() + " :";
+            errorMessage += e.getMessage();
+            System.err.println(errorMessage);
+            System.err.println("Offending query was: '"+ e.getQuery()+"'.");
+        } catch (QueryEngineException e) {
+            String errorMessage = "Following error occurred while executing a query : '";
+            errorMessage += e.getMessage();
+            System.err.println(errorMessage);
+            System.err.println("Offending query was: '" + e.getQuery() + "'.");
         }
     }
 

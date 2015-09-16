@@ -19,7 +19,7 @@ public class KnowledgeGraph {
 
     private final Map<String, Predicate> predicateMap;
 
-    private final Map<Triple, Set<Triple>> queryMapSet;
+    private final Map<String, Set<Triple>> queryMapSet;
 
     private KnowledgeGraph() {
         this.nodeMap = new HashMap<>();
@@ -43,11 +43,28 @@ public class KnowledgeGraph {
     public void importTriples(List<Triple> tripleList){
         // The following associations must be updated: nodeMap, tripleMap, queryMapSet, predicateMap to reflect the added Triple.  
         // There should be one Triple instance per unique Subject, Predicate, Object combination, so that Triples are not duplicated.
-        for (Triple triple : tripleList){
-            //generate all queries which can return this triple as their output.
-            //For each generated query, add this triple as a result
+        for (Triple newTriple : tripleList){
 
+            Node subject = getNode(newTriple.getSubject().getIdentifier());
+            Predicate predicate = getPredicate(newTriple.getPredicate().getIdentifier());
+            Node object = getNode(newTriple.getObject().getIdentifier());
+
+            Triple triple = getTriple(subject, predicate, object);
         }
+    }
+
+    private void addQueryResult(String query, Triple newResult) {
+        //get current set of results for this query
+        Set<Triple> resultSet = queryMapSet.get(query);
+
+        //instantiate the results set, if required
+        if(resultSet == null){
+            resultSet = new HashSet<>();
+            queryMapSet.put(query, resultSet);
+        }
+
+        //add the new result for the given query to resultSet.
+        resultSet.add(newResult);
     }
 
     /**
@@ -63,7 +80,7 @@ public class KnowledgeGraph {
     public Set<Triple> executeQuery(Triple query){
         //Use the queryMapSet to determine the  Triples that match the given Query.  
         // If none are found return an empty Set.
-        Set<Triple> queryResult = queryMapSet.get(query);
+        Set<Triple> queryResult = queryMapSet.get(query.getIdentifier());
 
         if(queryResult == null){
             queryResult = new HashSet<>();
@@ -97,10 +114,68 @@ public class KnowledgeGraph {
     }
 
     public Predicate getPredicate(String identifier){
-        return null;
+        String cleanedIdentifier = cleanIdentifier(identifier);
+        Predicate predicate = predicateMap.get(cleanedIdentifier);
+
+        if(predicate == null){
+            predicate = new Predicate(cleanedIdentifier);
+            predicateMap.put(cleanedIdentifier, predicate);
+        }
+
+        return predicate;
     }
 
+    /**
+     * Returns the Triple instance for the given  Object, Predicate and Subject.  
+     * Uses the  tripleMap to lookup the Triple.  
+     * If the Triple  does not exist, creates it and adds it to the tripleMap and updates the queryMapSet.
+     * @param subject
+     * @param predicate
+     * @param object
+     * @return
+     */
     public Triple getTriple(Node subject, Predicate predicate, Node object){
-        return null;
+        Triple triple = getOrCreateTriple(subject, predicate, object);
+
+        updateQueryMapSet(triple);
+        return triple;
+    }
+
+    private Triple getOrCreateTriple(Node subject, Predicate predicate, Node object) {
+        String tripleIdentifier = Triple.getIdentifier(subject, predicate, object);
+        Triple triple = tripleMap.get(tripleIdentifier);
+
+        if(triple == null){
+            triple = new Triple(subject, predicate, object);
+            tripleMap.put(tripleIdentifier, triple);
+        }
+        return triple;
+    }
+
+    private void updateQueryMapSet(Triple triple) {
+        //generate all queries which can return this triple as their output.
+        //For each generated query, add this triple as a result
+        addQueryResult(triple.getIdentifier(), triple);
+
+        Triple query1 = getOrCreateTriple(getNode("?"), triple.getPredicate(), triple.getObject());
+        addQueryResult(query1.getIdentifier(), triple);
+
+        Triple query2 = getOrCreateTriple(triple.getSubject(), getPredicate("?"), triple.getObject());
+        addQueryResult(query2.getIdentifier(), triple);
+
+        Triple query3 = getOrCreateTriple(triple.getSubject(), triple.getPredicate(), getNode("?"));
+        addQueryResult(query3.getIdentifier(), triple);
+
+        Triple query4 = getOrCreateTriple(getNode("?"), getPredicate("?"), triple.getObject());
+        addQueryResult(query4.getIdentifier(), triple);
+
+        Triple query5 = getOrCreateTriple(triple.getSubject(), getPredicate("?"), getNode("?"));
+        addQueryResult(query5.getIdentifier(), triple);
+
+        Triple query6 = getOrCreateTriple(getNode("?"), triple.getPredicate(), getNode("?"));
+        addQueryResult(query6.getIdentifier(), triple);
+
+        Triple query7 = getOrCreateTriple(getNode("?"), getPredicate("?"), getNode("?"));
+        addQueryResult(query7.getIdentifier(), triple);
     }
 }

@@ -5,7 +5,7 @@ import cscie97.asn1.knowledge.engine.domain.Predicate;
 import cscie97.asn1.knowledge.engine.domain.Triple;
 import cscie97.asn1.knowledge.engine.exception.ImportException;
 import cscie97.asn1.knowledge.engine.exception.InvalidTripleFormatException;
-import cscie97.asn1.knowledge.engine.validator.TripleParser;
+import cscie97.asn1.knowledge.engine.parser.TripleParser;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -41,8 +41,6 @@ public class Importer {
                 }
 
             }
-        } catch (FileNotFoundException e) {
-            throw new ImportException(fileName, "File at given path does not exist.");
         } catch (IOException e) {
             throw new ImportException(fileName, e.getMessage());
         }
@@ -60,10 +58,9 @@ public class Importer {
                 return null;
             }
 
-            KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
-            Node subject = knowledgeGraph.getNode(tripleParser.getSubject());
-            Predicate predicate = knowledgeGraph.getPredicate(tripleParser.getPredicate());
-            Node object = knowledgeGraph.getNode(tripleParser.getObject());
+            Node subject = new Node(tripleParser.getSubject());
+            Predicate predicate = new Predicate(tripleParser.getPredicate());
+            Node object = new Node(tripleParser.getObject());
 
             Triple triple = new Triple(subject, predicate, object);
             return triple;

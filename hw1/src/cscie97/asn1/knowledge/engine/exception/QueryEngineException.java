@@ -12,12 +12,6 @@ public class QueryEngineException extends Exception {
         this.query = query;
     }
 
-    @Override
-    public String getMessage() {
-        //TODO
-        return super.getMessage();
-    }
-
     public String getQuery() {
         return query;
     }
