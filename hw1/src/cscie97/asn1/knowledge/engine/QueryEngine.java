@@ -61,14 +61,16 @@ public class QueryEngine {
                 executeQuery(queryText);
             }
         } catch (IOException e) {
-            throw new QueryEngineException(fileName, e.getMessage());
+            throw new BulkQueryException(fileName, e.getMessage());
         } catch (QueryEngineException e){
             throw new BulkQueryException(fileName, lineNum, queryText, e.getMessage());
         }finally {
             try {
-                reader.close();
+                if(reader != null){
+                    reader.close();
+                }
             } catch (IOException ioe) {
-                throw new QueryEngineException(fileName, ioe.getMessage());
+                throw new BulkQueryException(fileName, ioe.getMessage());
             }
         }
 

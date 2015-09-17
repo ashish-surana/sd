@@ -1,25 +1,27 @@
 package cscie97.asn1.knowledge.engine.exception;
 
 /**
- *
+ * This class represents an exception during importing triples in a {@link cscie97.asn1.knowledge.engine.KnowledgeGraph}
+ * using {@link cscie97.asn1.knowledge.engine.Importer}.
  */
 public class ImportException extends Exception{
 
-    private final String filePath;
+    private final String tripleFilePath;
 
-    public ImportException(String filePath, String message){
+    /**
+     * This constructor creates a new ImportException using given parameters.
+     * @param tripleFilePath Path of the offending triple file.
+     * @param message Error message.
+     */
+    public ImportException(String tripleFilePath, String message){
         super(message);
-        this.filePath = filePath;
+        this.tripleFilePath = tripleFilePath;
     }
 
-    public String getFilePath() {
-        return filePath;
-    }
-
-    @Override
-    public String getMessage() {
-        String message = "Following error occurred while reading file at path: '"+ getFilePath() +"'.";
-        message += super.getMessage();
-        return message;
+    /**
+     * @return Path of the offending triple file.
+     */
+    public String getTripleFilePath() {
+        return tripleFilePath;
     }
 }

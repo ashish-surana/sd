@@ -7,34 +7,35 @@ import cscie97.asn1.knowledge.engine.exception.ImportException;
 import cscie97.asn1.knowledge.engine.exception.InvalidTripleFormatException;
 import cscie97.asn1.knowledge.engine.parser.TripleParser;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Collections;
 
 /**
- *
+ * This class imports triple from a file into {@link KnowledgeGraph}.
  */
 public class Importer {
 
     /**
      * Public method for importing triples from N_Triple formatted file into the KnowledgeGraph. 
      * Checks for valid input file name.  
-     * @param fileName
-     * @throws InvalidTripleFormatException
-     * //TODO
+     * @param tripleFilePath path to the input triple file.
+     * @throws InvalidTripleFormatException if a triple is not formatted correctly.
      * @throws ImportException on error accessing or processing the input triple file. 
      */
-    public void importTripleFile(String fileName) throws InvalidTripleFormatException, ImportException{
+    public void importTripleFile(String tripleFilePath) throws InvalidTripleFormatException, ImportException{
+        InputStream inputStream = null;
         //Read triple file, one line at a time
         try{
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            inputStream = new FileInputStream(new File(tripleFilePath));
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+
             String line;
             int lineNum = 0;
             while((line = reader.readLine()) !=null   ){
                 lineNum++;
-                Triple triple = createTriple(fileName, lineNum, line);
+                Triple triple = createTriple(tripleFilePath, lineNum, line);
                 //A triple can be null, if it was not correctly formatted in the input file.
                 if(triple != null){
                     KnowledgeGraph.getInstance().importTriples(Collections.singletonList(triple));
@@ -42,10 +43,21 @@ public class Importer {
 
             }
         } catch (IOException e) {
-            throw new ImportException(fileName, e.getMessage());
+            throw new ImportException(tripleFilePath, e.getMessage());
+        }finally {
+            try{
+                if(inputStream != null){
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                throw new ImportException(tripleFilePath, e.getMessage());
+            }
         }
     }
 
+    /**
+     * This method creates triple by parsing the given triple text.
+     */
     private Triple createTriple(String filePath, int lineNum, String tripleText) throws InvalidTripleFormatException{
         try{
             TripleParser tripleParser = new TripleParser(tripleText);

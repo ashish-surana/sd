@@ -5,7 +5,9 @@ import cscie97.asn1.knowledge.engine.domain.Predicate;
 import cscie97.asn1.knowledge.engine.domain.Triple;
 
 /**
- *
+ * This class parses the given query text, and validates it.
+ * In case of validation errors, error message can be retrieved using {@link #getErrorMessage()}.
+ * Parsed query can be accessed usign {@link #getQuery()}.
  */
 public class QueryParser {
 
@@ -25,7 +27,7 @@ public class QueryParser {
      *     <li>The queryText contains exactly three space-delimited words.</li>
      *     <li>The queryText does not end with a '.'.</li>
      * </ul>
-     * @return
+     * @return true, if and only if the query was parsed correctly.
      */
     public boolean validate() {
         if(queryText == null){
@@ -44,22 +46,19 @@ public class QueryParser {
         processedQueryText = processedQueryText.substring(0, processedQueryText.length()-1);
 
         if(!".".equals(queryTerminator)){
-            errorMessage = "Query text does not terminate with '.' :'"
-                    + queryText +"'";
+            errorMessage = "Query text does not terminate with '.' .";
             return false;
         }
 
         String[] triple = processedQueryText.split(" ");
 
         if(triple.length < 3){
-            errorMessage = "Query text is missing subject, predicate, or object:'"
-                    + queryText +"'";
+            errorMessage = "Query text is missing subject, predicate, or object.";
             return false;
         }
 
         if(triple.length > 3){
-            errorMessage = "Query text contains too many subject, predicate, or object:'"
-                    + queryText +"'";
+            errorMessage = "Query text contains too many subject, predicate, or object.";
             return false;
         }
 
@@ -70,10 +69,17 @@ public class QueryParser {
         return true;
     }
 
-    public String getErrorMessage() {
+    /**
+     * Returns error message, if an earlier call to validate() method has returned false.
+     * @return error message. Returns <code>null</code> if validate() method has not been invoked yet,
+     * or there are no error messages to report.
+     */    public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * @return the parsed query, or {@code null} if query couldn't be parsed.
+     */
     public Triple getQuery() {
         return query;
     }

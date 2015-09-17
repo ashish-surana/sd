@@ -1,7 +1,8 @@
 package cscie97.asn1.knowledge.engine.exception;
 
 /**
- *
+ * This class represents an exception that can be thrown during processing
+ * either a single query or a file-based bulk query.
  */
 public class QueryEngineException extends Exception {
 
@@ -12,6 +13,9 @@ public class QueryEngineException extends Exception {
         this.query = query;
     }
 
+    /**
+     * @return The query which caused this exception, or null if no query was executed.
+     */
     public String getQuery() {
         return query;
     }

@@ -8,7 +8,7 @@ You’ll turn in a zip file containing 
   ? Results of processing the query file 
   ? Include a document (in pdf format) describing your results: 
 Any changes that you made to the proposed design and how they continue to  support the requirements
--- 'filename' paramter of Importer.importTripleFile() method is changed to 'fileName' to follow Java parameter naming convention.
+-- 'filename' paramter of Importer.importTripleFile() method is changed to 'queryFilePath' to follow Java parameter naming convention.
 
 
 
