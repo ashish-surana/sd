@@ -3,7 +3,7 @@ Starbucks sells Donuts.
 Starbucks sells ?.
 ? has_store_location HarvardSquare.
 Lucy ? ?.
-Joe plays_sport ?.
+Joe plays_sport ?
 Lucy plays_sport ?.
 ? plays_sport ?.
 ? sells Coffee.  

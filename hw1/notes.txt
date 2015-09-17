@@ -1,47 +1,28 @@
-cscie97.asn1.knowledge.engine
-
-Remember to use Java doc to document class and method headers.  Add java comments inline  where appropriate to explain code logic.
-
-You’ll turn in a zip file containing 
-  ? Your source code (no .class files) 
-  ? Your data files (including two posted on the website) 
-  ? Results of processing the query file 
-  ? Include a document (in pdf format) describing your results: 
 Any changes that you made to the proposed design and how they continue to  support the requirements
--- 'filename' paramter of Importer.importTripleFile() method is changed to 'queryFilePath' to follow Java parameter naming convention.
+1. 'filename' paramter of Importer.importTripleFile() method is changed to 'queryFilePath' to follow Java parameter naming convention.
 
+2. I used TripleParser and QueryParser classes to parse triple and query as per the given requirements.
+These classes helped me in maintaining separation of concerns.
+
+3. I created BulkQueryException class to capture line number, and query file path during file-based query processing errors.
+
+4. I created InvalidTripleFormatException to capture complete details about an invalid triple.
+
+5. In Importer class, I read the file contents one line at a time, and passed the resulting triple to KnowledgeGraph.
+This pattern allows me to read large input files without having to load entire file in memory.
 
 
 Did the design document help with the implementation?
-Static method KnowledgeGraph.getInstance() was underlined
+Yes, the design document helped me in understanding unique responsibility of each class. It also helped me in understadning
+ how various classed will interact with each other to fulfill a use case.
 
 How could the design have been better, clearer, or made the implementation  easier?
+1. Code reuse can be increased by sharing validation logic between QueryParser and TripleParser.
 
-Hiding unnecessary APIs to reduce coupling:
-KnowledgeGraph can reduce coupling by setting access level of following methods as private:
+2. As a generally accepted design practice, getter methods in KnowledgeGraph should not be doing anything more than
+ just returning an object. Instead, these methods were creating objects, and updating various relationships.
+
+3. In order to hide unnecessary APIs and reduce coupling, KnowledgeGraph can set access level of following methods as private:
 getNode(), getPredicate(), getTriple()
 
-
-
-
-How could the design have been better, clearer, or made the implementation  easier?
---Provide error scenarios, and expected error message
-
-Implementation notes:
-Each line from the file represents a Subject Predicate Object triple, space delimited.
-Each triple must end with a '.'.
-Subject, predicate, and object are case-insensitive.
-In KG.importTriples() method, if a triple already exists, then log a debug message
-Trim extra leading and trailing whitespace from identifier names.
-
-
-Error: Include file path, line number in exception message
-InvalidTripleFormatException -- When a triple line is incorrectly formatted, such as when:
-The triple contains less than three space-delimted words.
-The triple contains more than three space-delimted words.
-The triple does not end with a '.'.
-Either subject, object or predicate uses '?' as an identifier.
-
-The output should include the original query followed by the Set of all matching Triples (no duplicates). If there are no matching triples, return “<null>”. 
-
-
+4. The design could have provided edge cases, error scenarios, and expected error messages.
