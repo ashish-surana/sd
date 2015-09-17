@@ -7,7 +7,8 @@ import cscie97.asn1.knowledge.engine.domain.Triple;
 import java.util.*;
 
 /**
- *
+ * This class represents a graph between subjects, predicates, and objects.
+ * It can be used to import triples, and to query for them.
  */
 public class KnowledgeGraph {
 
@@ -152,9 +153,12 @@ public class KnowledgeGraph {
         return triple;
     }
 
+    /**
+     * This method generates all queries which can return this triple as their output.
+     * For each generated query, this method adds this triple as a result of that query.
+     * @param triple given triple.
+     */
     private void updateQueryMapSet(Triple triple) {
-        //generate all queries which can return this triple as their output.
-        //For each generated query, add this triple as a result
         addQueryResult(triple.getIdentifier(), triple);
 
         Triple query1 = getOrCreateTriple(getNode("?"), triple.getPredicate(), triple.getObject());

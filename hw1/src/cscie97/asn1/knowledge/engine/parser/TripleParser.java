@@ -1,7 +1,9 @@
 package cscie97.asn1.knowledge.engine.parser;
 
 /**
- *
+ * This class parses the given triple text, and validates it.
+ * In case of validation errors, error message can be retrieved using {@link #getErrorMessage()}.
+ * Subject, object and predicate of parsed triple can be accessed using getters.
  */
 public class TripleParser {
 
@@ -23,7 +25,7 @@ public class TripleParser {
      *     <li>The triple does not end with a '.'.</li>
      *     <li>Neither subject, object nor predicate uses '?' as an identifier.</li>
      * </ul>
-     * @return
+     * @return true, if and only if triple was parsed successfully.
      */
     public boolean validate() {
         if(tripleText == null){
